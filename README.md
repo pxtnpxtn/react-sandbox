@@ -205,11 +205,13 @@ import React, { useState } from 'react';
 function Count() {
   const [count, setCount] = useState(0);
 
-  const increaseByOne = () => setCount(count + 1);
+  const increaseByOne = () => setCount((currentCount) => currentCount + 1);
 
   return (
     <>
-      <button onClick={setCount(count - 1)}>-1</button>
+      <button onClick={() => setCount((currentCount) => currentCount - 1)}>
+        -1
+      </button>
       {count}
       <button onClick={increaseByOne}>+1</button>
     </>
@@ -247,8 +249,8 @@ Return a function from our useEffect's callback.
 
 ```javascript
 useEffect(() => {
-  // Code run when component updates
- return () => // Code run when component is destroyed
+  // Code that runs when component updates
+ return () => // Code that runs when component is destroyed
 }, [items]);
 ```
 
@@ -267,6 +269,93 @@ function SomeComponent() {
 }
 ```
 
+### useMemo
+
+Used to memoize an object, preventing unnecessary rerenders when passing a prop.
+
+Without React.memo and useMemo, the Child component would be rerendered every time setCount is called (even though they are unrelated).
+
+```javascript
+import React, {useState, useMemo} = from 'react';
+
+export const Parent = () => {
+  const [count, setCount] = useState(0);
+  const name = {
+    firstName: 'Bob',
+    lastName: 'Smith'
+  }
+  const MemoizedPerson = useMemo(() => name, []);
+  return (
+    <div>
+    <button onClick={() => setCount(currentCount => currentCount + 1)}>Increase</button>
+    <MemoizedChild name={MemoizedPerson} />
+    </div>
+  )
+}
+
+export const Child = ({name}) => {
+    return (
+      <>
+        Child - {name.firstName} {name.lastName}
+      </>
+    )
+}
+
+const MemoizedChild = React.memo(Child);
+
+```
+
 ## Common Mistakes
 
-### Something
+### Props
+
+#### PropTypes
+
+If you aren't using TypeScript, then add propTypes.
+
+```javascript
+Counter.proptypes = {
+  initialCount: PropTypes.number,
+};
+```
+
+### Hooks
+
+#### Async useState
+
+useState's setter (setCount) is asynchronous. You cannot set the state and then immediately make an API call with that value. Instead, use setCount and then make that API call in a useEffect hook.
+
+Always pass an initial value to useState.
+
+```javascript
+const [count, setCount] = useState(0);
+
+const increaseByOne = () => {
+  setCount((currentCount) => currentCount + 1);
+  // Do not make an API call here to send the new count value.
+};
+
+useEffect(() => {
+  // Make API call here instead
+}, [count]);
+```
+
+#### Pass Function To useState
+
+Instead of using count directly
+
+```javascript
+const increaseByONe = () => {
+  setCount(count + 1);
+};
+```
+
+Pass in a function. Current state is automatically the given parameter. This will always gives you an accurate value of the current state.
+
+```javascript
+const increaseByONe = () => {
+  setCount((currentCount) => currentCount + 1);
+};
+```
+
+#### useEffect
