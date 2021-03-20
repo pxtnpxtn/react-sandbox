@@ -1,70 +1,158 @@
-# Getting Started with Create React App
+# React Sandbox
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React project to practice doing all things React.
 
-## Available Scripts
+## Fundamentals
 
-In the project directory, you can run:
+### Props/Inputs From Parent to Child
 
-### `npm start`
+```javascript
+function BookList() {
+  const list = [
+    { title: 'A Christmas Carol', author: 'Charles Dickens' },
+    { title: 'The Mansion', author: 'Henry Van Dyke' },
+  ];
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  return (
+    <ul>
+      {list.map((book, i) => (
+        <Book {...book} key={i} />
+      ))}
+    </ul>
+  );
+}
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+function Book({ title, author }) {
+  return (
+    <li>
+      <h2>{title}</h2>
+      <div>{author}</div>
+    </li>
+  );
+}
+```
 
-### `npm test`
+### Emits/Outputs From Child To parent
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### State As Props Pattern
 
-### `npm run build`
+Holding state in a parent component, passing it down to child components, and then emiting changes from the child to the parent, changing the state values.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Example: Shopping cart parent > Shopping item child. Parent holds grand total, child holds total of that item.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+// Child
+function BookTitle(props) {
+  return (
+    <label>
+      Title:
+      <input onChange={props.onTitleChange} value={props.title} />
+    </label>
+  );
+}
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+// Parent
+function BookEditForm(props) {
+  const [title, setTitle] = useState(props.book.title);
+  function handleTitleChange(evt) {
+    setTitle(evt.target.value);
+  }
+  return (
+    <form>
+      <BookTitle onTitleChange={handleTitleChange} title={title} />
+    </form>
+  );
+}
+```
 
-### `npm run eject`
+### Conditionally Rendering (ngIf/v-if)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```javascript
+let condition = true;
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+function SomeComponent() {
+    return (
+        {condition ?
+            <div>If Rendering</div>
+            :
+            <div>Else Rendering</div>
+        }
+    )
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```javascript
+let condition = true;
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+function SomeComponent() {
+    return (
+        {condition ?
+            <SomeComponent />
+            :
+            null
+        }
+    )
+}
+```
 
-## Learn More
+```javascript
+function SomeComponent(props) {
+  return (
+    <div>
+      {props.loggedIn && <h3>You're logged in as {props.data.username}</h3>}
+    </div>
+  );
+}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Looping (ngFor/v-for)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Map over list.
 
-### Code Splitting
+```javascript
+{
+  items.map((item, i) => <CartItem key={i} {...item} />);
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Scoped Styling
 
-### Analyzing the Bundle Size
+Create ComponentName.css, add styling nested in .ComponentName, import stylesheet to ComponentName.js, at top level of component add className="ComponentName", profit.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```javascript
+function Something() {
+  return <div className="Something">//...</div>;
+}
+```
 
-### Making a Progressive Web App
+### Inline styling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```javascript
+function someComponent() {
+  return <h1 style={{ color: 'red' }}>Hello</h1>;
+}
+```
 
-### Advanced Configuration
+### Conditional Styling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```javascript
+function someComponent() {
+  const happy = true;
+  const styles = { color: happy ? 'green' : 'red' };
+  return <h1 style={styles}>Hello</h1>;
+}
+```
 
-### Deployment
+## Context API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Hooks
 
-### `npm run build` fails to minify
+### useState
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### useEffect
+
+### useRef
+
+## Common Mistakes
+
+### Something

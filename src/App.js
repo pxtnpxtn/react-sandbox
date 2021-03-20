@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import Another from './Another';
+import Cart from './Cart';
+
+const listOfProducts = [
+  { id: 1, name: 'Bananas', price: 1.15, quantity: 0 },
+  { id: 2, name: 'Apples', price: 2.10, quantity: 0 },
+  { id: 3, name: 'Pears', price: 1.75, quantity: 0 }
+]
 
 function App() {
+  const num = Math.random() * 10;
+  const someObs = {
+    name: 'Paxton',
+    age: 33
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>num {num < 3 ? 'Smaller' : 'Bigger'}</h1>
+      <Another yay={someObs} />
+      <Cart listOfProducts={listOfProducts} />
     </div>
   );
 }
