@@ -358,4 +358,64 @@ const increaseByONe = () => {
 };
 ```
 
-#### useEffect
+## Axios
+
+See AxiosPlayground.js for actual implementation and usage.
+
+Using Directly
+
+```javascript
+const getPost = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: 'https://jsonplaceholder.typicode.com/posts',
+    }).then((res) => res.data);
+    console.log('response', response);
+  } catch (err) {
+    console.log('getPost Error-->', err);
+  }
+};
+```
+
+Using Instances
+
+```javascript
+const crudcrudEndpointInstance = axios.create({
+  baseURL: 'https://crudcrud.com/api/cd2746cc6fa0481a96abcf1d776e8ca4',
+  headers: {
+    /* Auth Token Info */
+    'some-auth-key': 'token123',
+  },
+});
+
+const createPost = async () => {
+  const response = await crudcrudEndpointInstance
+    .post('/post', {
+      title: 'Test',
+      id: 1,
+      author: 'Bob',
+    })
+    .catch((err) => console.log('createPost Error-->', err));
+};
+
+const getPost = async () => {
+  try {
+    const response = await crudcrudEndpointInstance
+      .get(`/post`)
+      .then((res) => res.data);
+    console.log('response', response);
+  } catch (err) {
+    console.log('getPost Error-->', err);
+  }
+};
+```
+
+Axios interceptors allow you to intercept requests and responses before they are handled by .then or .catch.
+
+```javascript
+const instance = axios.create();
+instance.interceptors.request.use(() => {
+  /*...*/
+});
+```
