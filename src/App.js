@@ -1,6 +1,7 @@
 import Another from './Another';
 import Cart from './Cart';
 import AxiosPlayground from './AxiosPlayground';
+import ClassComponent from './ClassComponent';
 
 const listOfProducts = [
   { id: 1, name: 'Bananas', price: 1.15, quantity: 0 },
@@ -14,12 +15,14 @@ function App() {
     name: 'Paxton',
     age: 33
   }
+
   return (
     <div className="App">
-      <h1>num {num < 3 ? 'Smaller' : 'Bigger'}</h1>
+      {/* <h1>num {num < 3 ? 'Smaller' : 'Bigger'}</h1>
       <Another yay={someObs} />
       <Cart listOfProducts={listOfProducts} />
-      <AxiosPlayground />
+      <AxiosPlayground /> */}
+      <ClassComponent />
     </div>
   );
 }
